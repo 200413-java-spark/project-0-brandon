@@ -1,4 +1,10 @@
 # Changelog
+## Version 0.1.0
+
+### Added
+
+- IO txt file
+
 ## Version 0.0.3
 
 ### Added

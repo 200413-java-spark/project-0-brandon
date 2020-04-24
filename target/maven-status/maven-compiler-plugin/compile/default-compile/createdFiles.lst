@@ -1,2 +1,4 @@
+com\github\brandon\market\io\FileParser.class
+com\github\brandon\market\inventory\Product.class
 com\github\brandon\market\Market.class
 com\github\brandon\market\inventory\Inventory.class
