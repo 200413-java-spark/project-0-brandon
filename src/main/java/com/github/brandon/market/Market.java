@@ -6,7 +6,9 @@ import com.github.brandon.market.jdbc.Jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,10 +21,12 @@ public class Market {
     static Scanner scanner = new Scanner(System.in);
 
     public static void menu() {
-        System.out.println("\n \nWhat do you want to do?");
+        System.out.println("\n**************************************");
+        System.out.println("What do you want to do?");
         System.out.println("1 - See inventory");
         System.out.println("2 - Add to inventory");
-        System.out.println("0 - Close the program \n \n");
+        System.out.println("0 - Close the program");
+        System.out.println("**************************************\n");
 
         int option = scanner.nextInt();
 
@@ -47,6 +51,15 @@ public class Market {
         // FileParser.write();
         FileParser.read();
 
+
+        Jdbc.getInstance();
+        if (Jdbc.getInstance() != null){
+            System.out.println("ConnectedInstance");
+        } else {
+            System.out.println("Not connected Instance");
+        }
+
+            
         Connection connection = null;
         
         try {
@@ -59,7 +72,25 @@ public class Market {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }   
+        }      
+
+        try (
+            Connection connection2 = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "mydb", "mydb"                );
+            Statement statement = connection2.createStatement();
+        ){
+            int rowCount = statement.executeUpdate("insert into Products values (4,'cheese',9)");
+
+            ResultSet inv = statement.executeQuery("select * from Products");
+
+            // Loop through ResultSet for each row returned
+            while(inv.next()) {
+                System.out.println(inv.getInt("id"));
+                System.out.println(inv.getString("Item"));
+                System.out.println(inv.getInt("Quantity"));
+            }            
+        } catch (Exception e) {
+            //TODO: handle exception
+        } 
  
         //ArrayList historyInput = new ArrayList();
 
