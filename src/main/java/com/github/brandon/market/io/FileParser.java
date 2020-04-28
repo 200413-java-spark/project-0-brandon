@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 public class FileParser {
     static File file = new File("file.txt");
 
+/*
     public static void write(){
         //Print to file
         try  (  FileWriter fw = new FileWriter(file, true);
@@ -26,7 +27,7 @@ public class FileParser {
             e.printStackTrace();
         }        
     }
-
+*/
     public static void write(String var){
         //Print to file
         try  (  FileWriter fw = new FileWriter(file, true);
