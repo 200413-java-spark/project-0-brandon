@@ -1,5 +1,6 @@
 package com.github.brandon.market.inventory;
 
+import java.lang.*;
 import java.util.Scanner;
 import java.sql.*;
 
@@ -44,6 +45,10 @@ public class Product {
             preStatement.setString(1, name);
             System.out.println("Type Product Quantity: ");
             qty = scanner.nextInt();
+            while (qty < 0) {
+                System.out.println("Product Quantity cannot be less than 0. Please type again:");
+                qty = scanner.nextInt();
+            }
             preStatement.setInt(2, qty);
             preStatement.addBatch();
             scanner.skip("\n");
@@ -54,7 +59,71 @@ public class Product {
         }
     }
 
+    public static void setIdVer (int idSc) {
+
+    }
+    public static int checkIdUpdate(int idSc, ResultSet rs) {
+        int qtyVer;
+        try {
+            while(rs.next()) {
+                if (idSc == rs.getInt("prod_id")){
+                    qtyVer = rs.getInt("prod_qty");
+                    return qtyVer;
+                }
+            }
+            return -1;
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+        return -1;
+    }
+
     public static void buyInv(){
+        int idSc;
+        int idVer;
+        int qtyVer = -1;
+        int qty = 0;
+        int value;
+        String query = "update Products set prod_qty=? where prod_id=?;";
+
+        try (Connection connection = Jdbc.getConnection();
+            PreparedStatement preStatement = connection.prepareStatement(query);
+            Statement statement = connection.createStatement();
+            Statement verStatement = connection.createStatement();)
+        {
+            //Selecting first to know what's stored before updating
+            ResultSet inv = statement.executeQuery("select * from Products;");
+            System.out.println("id | Name   | Quantity\n");
+            while(inv.next()) {
+                System.out.println(inv.getInt("prod_id") + " | " + inv.getString("prod_name") + " | " + inv.getInt("prod_qty"));
+            }
+            ResultSet rs = statement.executeQuery("select * from Products;");
+
+            //Where update starts
+
+            while (qtyVer == -1) {
+                System.out.println("Type the ID of the Product that was bought: ");
+                idSc = scanner.nextInt();
+                qtyVer = checkIdUpdate(idSc, rs);
+            }
+            
+            while (qty <1) {
+                System.out.println("Type the quantity that was bought: ");
+                qty = scanner.nextInt();
+            }
+            int sum = Integer.sum(qty, qtyVer);
+            preStatement.setInt(1, qty);
+            preStatement.setInt(2, sum);
+            preStatement.addBatch();
+            scanner.skip("\n");
+
+            preStatement.executeBatch();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    public static void sellInv(){
         int id;
         int qty;
         int value;
@@ -86,7 +155,6 @@ public class Product {
             System.err.println(ex.getMessage());
         }
     }
-
     public static void showInv(){
         try (
             Connection connection = Jdbc.getConnection();
