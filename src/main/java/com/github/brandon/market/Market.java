@@ -25,6 +25,7 @@ public class Market {
         System.out.println("What do you want to do?");
         System.out.println("1 - See inventory");
         System.out.println("2 - Add to inventory");
+        System.out.println("3 - Buy product");
         System.out.println("0 - Close the program");
         System.out.println("**************************************\n");
 
@@ -36,6 +37,9 @@ public class Market {
                 break;
             case 2:
                 Product.addInv();
+                break;
+            case 3:
+                Product.buyInv();
                 break;
             case 0:
                 System.exit(0);
