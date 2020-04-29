@@ -32,7 +32,7 @@ public class Market {
 
         switch (option) {
             case 1:
-                Product.showInvMA();
+                Product.showInv();
                 break;
             case 2:
                 Product.addInv();
