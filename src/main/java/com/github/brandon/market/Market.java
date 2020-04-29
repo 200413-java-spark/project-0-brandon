@@ -78,15 +78,15 @@ public class Market {
             Connection connection2 = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "mydb", "mydb"                );
             Statement statement = connection2.createStatement();
         ){
-            int rowCount = statement.executeUpdate("insert into Products values (4,'cheese',9);");
+            //int rowCount = statement.executeUpdate("insert into Products values (4,'cheese',9);");
 
             ResultSet inv = statement.executeQuery("select * from Products;");
 
             // Loop through ResultSet for each row returned
             while(inv.next()) {
-                System.out.println(inv.getInt("id"));
-                System.out.println(inv.getString("Item"));
-                System.out.println(inv.getInt("Quantity"));
+                System.out.println(inv.getInt("prod_id"));
+                System.out.println(inv.getString("prod_name"));
+                System.out.println(inv.getInt("prod_qty"));
             }            
         } catch (Exception e) {
             //TODO: handle exception
