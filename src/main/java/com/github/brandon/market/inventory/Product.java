@@ -59,9 +59,6 @@ public class Product {
         }
     }
 
-    public static void setIdVer (int idSc) {
-
-    }
     public static int checkIdUpdate(int idSc) {
         int qtyVer;
         try ( Connection connection = Jdbc.getConnection();
@@ -102,15 +99,14 @@ public class Product {
             ResultSet rs = statement.executeQuery("select * from Products;");
 
             //Where update starts
-
             while (qtyVer == -1) {
-                System.out.println("Type the ID of the Product that was bought: ");
+                System.out.println("Type ID for Product that was bought (Increase Inventory). Must be a valid ID: ");
                 idSc = scanner.nextInt();
                 qtyVer = checkIdUpdate(idSc);
             }
             
             while (qty <1) {
-                System.out.println("Type the quantity that was bought: ");
+                System.out.println("Type the quantity that was bought. It must be at least one: ");
                 qty = scanner.nextInt();
             }
             int sum = Integer.sum(qty, qtyVer);
@@ -126,8 +122,10 @@ public class Product {
     }
 
     public static void sellInv(){
-        int id;
-        int qty;
+        int idSc=-1;
+        int idVer;
+        int qtyVer = -1;
+        int qty = 0;
         int value;
         String query = "update Products set prod_qty=? where prod_id=?;";
 
@@ -137,18 +135,29 @@ public class Product {
         {
             //Selecting first to know what's stored before updating
             ResultSet inv = statement.executeQuery("select * from Products;");
-            System.out.println("id | Name    | Quantity\n");
+            System.out.println("id | Name   | Quantity\n");
             while(inv.next()) {
                 System.out.println(inv.getInt("prod_id") + " | " + inv.getString("prod_name") + " | " + inv.getInt("prod_qty"));
             }
+            ResultSet rs = statement.executeQuery("select * from Products;");
 
             //Where update starts
-            System.out.println("Type the ID of the Product that was bought: ");
-            id = scanner.nextInt();
-            System.out.println("Type the quantity that was bought: ");
-            qty = scanner.nextInt();
-            preStatement.setInt(1, qty);
-            preStatement.setInt(2, id);
+            while (qtyVer == -1) {
+                System.out.println("Type ID of the Product Purchased by Client (Inventory Decrease). Must be a valid ID: ");
+                idSc = scanner.nextInt();
+                qtyVer = checkIdUpdate(idSc);
+            }
+
+            int sub = -1;
+
+            while ((qty <1) && (sub<0)) {
+                System.out.println("Type the quantity Purchased by the client. Must be at least one: ");
+                qty = scanner.nextInt();
+                sub = qtyVer - qty;
+            }
+            int sum = Integer.sum(qty, qtyVer);
+            preStatement.setInt(1, sub);
+            preStatement.setInt(2, idSc);
             preStatement.addBatch();
             scanner.skip("\n");
 
@@ -157,6 +166,11 @@ public class Product {
             System.err.println(ex.getMessage());
         }
     }
+
+    public static void verSellInv(){
+
+    }
+    
     public static void showInv(){
         try (
             Connection connection = Jdbc.getConnection();
