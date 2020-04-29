@@ -48,6 +48,8 @@ public class Product {
             System.out.println("Type Product Quantity: ");
             qty = scanner.nextInt();
             preStatement.setInt(2, qty);
+            preStatement.addBatch();
+            scanner.skip("\n");
 
             preStatement.executeBatch();
         } catch (SQLException ex) {
