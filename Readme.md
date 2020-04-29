@@ -1,6 +1,8 @@
 # Market Inventory Program
 Basic market inventory program
 
+## Build
+> mvn clean compile package
 
-### Bugs to be fixed
-addInv() method inside menu() method is bugged, but when used inside the main it works fine.
+## Run
+> mvn exec:java
