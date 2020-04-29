@@ -50,30 +50,7 @@ public class Market {
 
         // FileParser.write();
         FileParser.read();
-
-
-        Jdbc.getInstance();
-        if (Jdbc.getInstance() != null){
-            System.out.println("ConnectedInstance");
-        } else {
-            System.out.println("Not connected Instance");
-        }
-
-
-        Connection connection = null;
-
-        try {
-            connection=DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "mydb", "mydb");
-            if (connection != null){
-                System.out.println("Connected");
-            } else {
-                System.out.println("Not connected");
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+/*
         try (
             Connection connection2 = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "mydb", "mydb"                );
             Statement statement = connection2.createStatement();
@@ -89,7 +66,7 @@ public class Market {
         } catch (Exception e) {
             //TODO: handle exception
         }
-
+*/
         //ArrayList historyInput = new ArrayList();
 
         System.out.println("\n \nWelcome to Market Inventory Program");

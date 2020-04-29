@@ -37,7 +37,7 @@ public class Product {
         //
         String name;
         int qty;
-        String query = "insert into Products (prod_name,prod_qty) values (?,?)";
+        String query = "insert into Products (prod_name,prod_qty) values (?,?);";
 
         try (Connection connection = Jdbc.getConnection();
             PreparedStatement preStatement = connection.prepareStatement(query);) 
@@ -53,8 +53,23 @@ public class Product {
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
+    }
 
+    public static void showInv(){
+        try (
+            Connection connection = Jdbc.getConnection();
+            Statement statement = connection.createStatement();
+        ){
+            ResultSet inv = statement.executeQuery("select * from Products;");
+            System.out.println("id | Name    | Quantity\n");
 
+            // Loop through ResultSet for each row returned
+            while(inv.next()) {
+                System.out.println(inv.getInt("prod_id") + " | " + inv.getString("prod_name") + " | " + inv.getInt("prod_qty"));
+            }
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
     }
 
     public static void addInvMA() {
