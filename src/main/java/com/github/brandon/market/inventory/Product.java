@@ -62,9 +62,12 @@ public class Product {
     public static void setIdVer (int idSc) {
 
     }
-    public static int checkIdUpdate(int idSc, ResultSet rs) {
+    public static int checkIdUpdate(int idSc) {
         int qtyVer;
-        try {
+        try ( Connection connection = Jdbc.getConnection();
+            Statement verStatement = connection.createStatement();) 
+        {
+            ResultSet rs = verStatement.executeQuery("select * from Products;");
             while(rs.next()) {
                 if (idSc == rs.getInt("prod_id")){
                     qtyVer = rs.getInt("prod_qty");
@@ -79,7 +82,7 @@ public class Product {
     }
 
     public static void buyInv(){
-        int idSc;
+        int idSc=-1;
         int idVer;
         int qtyVer = -1;
         int qty = 0;
@@ -88,8 +91,7 @@ public class Product {
 
         try (Connection connection = Jdbc.getConnection();
             PreparedStatement preStatement = connection.prepareStatement(query);
-            Statement statement = connection.createStatement();
-            Statement verStatement = connection.createStatement();)
+            Statement statement = connection.createStatement();)
         {
             //Selecting first to know what's stored before updating
             ResultSet inv = statement.executeQuery("select * from Products;");
@@ -104,7 +106,7 @@ public class Product {
             while (qtyVer == -1) {
                 System.out.println("Type the ID of the Product that was bought: ");
                 idSc = scanner.nextInt();
-                qtyVer = checkIdUpdate(idSc, rs);
+                qtyVer = checkIdUpdate(idSc);
             }
             
             while (qty <1) {
@@ -112,8 +114,8 @@ public class Product {
                 qty = scanner.nextInt();
             }
             int sum = Integer.sum(qty, qtyVer);
-            preStatement.setInt(1, qty);
-            preStatement.setInt(2, sum);
+            preStatement.setInt(1, sum);
+            preStatement.setInt(2, idSc);
             preStatement.addBatch();
             scanner.skip("\n");
 
