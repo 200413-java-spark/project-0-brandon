@@ -59,9 +59,9 @@ public class Market {
             System.out.println("Not connected Instance");
         }
 
-            
+
         Connection connection = null;
-        
+
         try {
             connection=DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "mydb", "mydb");
             if (connection != null){
@@ -72,7 +72,7 @@ public class Market {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }      
+        }
 
         try (
             Connection connection2 = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "mydb", "mydb"                );
@@ -84,14 +84,12 @@ public class Market {
 
             // Loop through ResultSet for each row returned
             while(inv.next()) {
-                System.out.println(inv.getInt("prod_id"));
-                System.out.println(inv.getString("prod_name"));
-                System.out.println(inv.getInt("prod_qty"));
-            }            
+                System.out.println(inv.getInt("prod_id") + " | " + inv.getString("prod_name") + " | " + inv.getInt("prod_qty"));
+            }
         } catch (Exception e) {
             //TODO: handle exception
-        } 
- 
+        }
+
         //ArrayList historyInput = new ArrayList();
 
         System.out.println("\n \nWelcome to Market Inventory Program");
