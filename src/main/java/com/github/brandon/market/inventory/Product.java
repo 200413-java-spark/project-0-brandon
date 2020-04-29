@@ -47,6 +47,7 @@ public class Product {
             preStatement.setInt(2, qty);
             preStatement.addBatch();
             scanner.skip("\n");
+<<<<<<< HEAD
 
             preStatement.executeBatch();
         } catch (SQLException ex) {
@@ -80,6 +81,8 @@ public class Product {
             preStatement.setInt(2, id);
             preStatement.addBatch();
             scanner.skip("\n");
+=======
+>>>>>>> 649a9da8582e8a7be831283e3aa7ece17a13314e
 
             preStatement.executeBatch();
         } catch (SQLException ex) {
