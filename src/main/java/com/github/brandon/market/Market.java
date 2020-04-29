@@ -32,7 +32,7 @@ public class Market {
 
         switch (option) {
             case 1:
-                Product.showInv();
+                Product.showInvMA();
                 break;
             case 2:
                 Product.addInv();
@@ -78,9 +78,9 @@ public class Market {
             Connection connection2 = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "mydb", "mydb"                );
             Statement statement = connection2.createStatement();
         ){
-            int rowCount = statement.executeUpdate("insert into Products values (4,'cheese',9)");
+            int rowCount = statement.executeUpdate("insert into Products values (4,'cheese',9);");
 
-            ResultSet inv = statement.executeQuery("select * from Products");
+            ResultSet inv = statement.executeQuery("select * from Products;");
 
             // Loop through ResultSet for each row returned
             while(inv.next()) {
@@ -94,7 +94,7 @@ public class Market {
  
         //ArrayList historyInput = new ArrayList();
 
-        System.out.println("\n \n Welcome to Market Inventory Program");
+        System.out.println("\n \nWelcome to Market Inventory Program");
         menu();
     }
 }

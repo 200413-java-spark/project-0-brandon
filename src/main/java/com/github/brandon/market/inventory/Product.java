@@ -1,15 +1,63 @@
 package com.github.brandon.market.inventory;
 
 import java.util.Scanner;
+import java.sql.*;
 
 import com.github.brandon.market.io.FileParser;
+import com.github.brandon.market.jdbc.Jdbc;
 
 public class Product {
+    private Jdbc jdbc;
+
+    private String name;
+    private int qty;
 
     static Scanner scanner = new Scanner(System.in);
     static String[][] inv = new String[3][2];
 
-    public static void addInv() {
+    public String getName(){
+        return name;
+    }
+
+    public int getQty(){
+        return qty;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setQty(int qty){
+        this.qty = qty;
+    }
+
+    public static void addInv(){
+        //Jdbc connection = Jdbc.getInstance(); 
+        //Connection connection = Jdbc.getConnection();
+        //
+        String name;
+        int qty;
+        String query = "insert into Products (prod_name,prod_qty) values (?,?)";
+
+        try (Connection connection = Jdbc.getConnection();
+            PreparedStatement preStatement = connection.prepareStatement(query);) 
+        {
+            System.out.println("Type Product Name: ");
+            name = scanner.nextLine();
+            preStatement.setString(1, name);
+            System.out.println("Type Product Quantity: ");
+            qty = scanner.nextInt();
+            preStatement.setInt(2, qty);
+
+            preStatement.executeBatch();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+
+    }
+
+    public static void addInvMA() {
         int i = 0;
         int j = 0;
 
@@ -28,7 +76,7 @@ public class Product {
         }
     }
 
-    public static void showInv() {
+    public static void showInvMA() {
         int i = 1;
         int j = 1;
 

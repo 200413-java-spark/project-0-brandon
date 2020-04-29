@@ -26,8 +26,8 @@ public class Jdbc {
         return instance;
     }
 
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, username, password);
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "mydb", "mydb");
     }    
 /*
     public Connection connectionTest(){
