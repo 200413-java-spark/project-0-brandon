@@ -58,7 +58,7 @@ public class Product {
         int id;
         int qty;
         int value;
-        String query = "update Products set (prod_qty=?) where (prod_id=?);";
+        String query = "update Products set prod_qty=? where prod_id=?;";
 
         try (Connection connection = Jdbc.getConnection();
             PreparedStatement preStatement = connection.prepareStatement(query);
