@@ -32,15 +32,12 @@ public class Product {
     }
 
     public static void addInv(){
-        //Jdbc connection = Jdbc.getInstance(); 
-        //Connection connection = Jdbc.getConnection();
-        //
         String name;
         int qty;
         String query = "insert into Products (prod_name,prod_qty) values (?,?);";
 
         try (Connection connection = Jdbc.getConnection();
-            PreparedStatement preStatement = connection.prepareStatement(query);) 
+            PreparedStatement preStatement = connection.prepareStatement(query);)
         {
             System.out.println("Type Product Name: ");
             name = scanner.nextLine();
@@ -48,6 +45,41 @@ public class Product {
             System.out.println("Type Product Quantity: ");
             qty = scanner.nextInt();
             preStatement.setInt(2, qty);
+            preStatement.addBatch();
+            scanner.skip("\n");
+
+            preStatement.executeBatch();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    public static void buyInv(){
+        int id;
+        int qty;
+        int value;
+        String query = "update Products set (prod_qty=?) where (prod_id=?);";
+
+        try (Connection connection = Jdbc.getConnection();
+            PreparedStatement preStatement = connection.prepareStatement(query);
+            Statement statement = connection.createStatement();)
+        {
+            //Selecting first to know what's stored before updating
+            ResultSet inv = statement.executeQuery("select * from Products;");
+            System.out.println("id | Name    | Quantity\n");
+            while(inv.next()) {
+                System.out.println(inv.getInt("prod_id") + " | " + inv.getString("prod_name") + " | " + inv.getInt("prod_qty"));
+            }
+
+            //Where update starts
+            System.out.println("Type the ID of the Product that was bought: ");
+            id = scanner.nextInt();
+            System.out.println("Type the quantity that was bought: ");
+            qty = scanner.nextInt();
+            preStatement.setInt(1, qty);
+            preStatement.setInt(2, id);
+            preStatement.addBatch();
+            scanner.skip("\n");
 
             preStatement.executeBatch();
         } catch (SQLException ex) {
